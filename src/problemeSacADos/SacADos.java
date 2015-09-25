@@ -5,82 +5,78 @@ import java.util.ArrayList;
 public class SacADos {
 	
 	public static void main(String[] args) {
-		ArrayList<Character> test = new ArrayList<Character>();
+				/*ArrayList<Character> test = new ArrayList<Character>();
 				test = progDynamique(12);
-				System.out.println(test.toString());
+				System.out.println(test.toString());*/
+				Sac s = new Sac("fichier_sac.txt",12);
+				System.out.println(s.toString());
+				System.out.println(progDynamique(s, 12));
 	}
 	
 	/**
 	 * Methode de resolution du probleme de sac à dos (test)
 	 *@return une liste contenant une combinaison optimal
 	 */
-	public static ArrayList<Character> progDynamique(int maxPoids){
-		//variables utilisées
-		char[] tabObjet = {'A','B','C','D','E','F','G','H'};
-		int[] tabValeurs = {5, 8, 14, 6, 13, 17, 10, 4};
-		int[] tabPoids = {2, 3,  5, 2,  4,  6,  3, 1};
-		int a = tabObjet.length;
-		int[][] tabTraitement = new int[a][maxPoids + 1];
-		ArrayList<Character> combinaison = new ArrayList<Character>()  ;
+	public static ArrayList<String> progDynamique(Sac a_resoudre, int maxPoids){
+		//nombre d'objet à traiter
+		int nbObjet = a_resoudre.getTabObjet().size();
+		int[][] tabTraitement = new int[nbObjet][maxPoids + 1];
+		//liste contenant une combinaison optimal
+		ArrayList<String> combinaison = new ArrayList<String>();
 		
 		//debut du traitement remplissage de la premiere ligne
-		tabTraitement = initTabTraitement(tabTraitement,tabPoids,tabValeurs,maxPoids);
+		tabTraitement = initTabTraitement(tabTraitement, a_resoudre);
 		//remplissages des lignes suivantes
-		tabTraitement = traitementObjet(tabTraitement, tabPoids, tabValeurs, maxPoids);
+		tabTraitement = traitementObjet(tabTraitement,a_resoudre);
 		
 		//recuperation de la combinaison
-		combinaison = getCombinaison(tabTraitement, tabPoids, tabObjet);
+		combinaison = getCombinaison(tabTraitement, a_resoudre);
 		return combinaison;
 	}
 	/**
-	 * initialisation du tableau de traitement de l'algorithme de resolution du sac à dos
-	 * @param tabIni
-	 * @param tabPoids
-	 * @param tabValeurs
-	 * @param maxPoids
-	 * @return
+	 * Initialisation du tableau de traitement
+	 * @param tabIni tableau de traitement
+	 * @param a_resoudre sac à traiter
+	 * @return le tableau initialisé
 	 */
-	public static int[][] initTabTraitement(int[][] tabIni,int[] tabPoids,int[] tabValeurs,int maxPoids){
+	public static int[][] initTabTraitement(int[][] tabIni,Sac a_resoudre){
 		//debut du traitement 
 		//remplissage de la premiere ligne
 		int j = 0;
-		while(j < maxPoids +1) {
-			if (tabPoids[0] > j)
+		while(j < a_resoudre.getMaxPoids() +1) {
+			if (a_resoudre.getTabPoids().get(0) > j)
 				tabIni[0][j] = 0;
 			else
-				tabIni[0][j] = tabValeurs[0];
+				tabIni[0][j] = a_resoudre.getTAbValeur().get(0);
 			j++;
 			}
 		return tabIni;
 	}
 	/**
-	 * Traitement des objet (chaque ligne de la matrice correspond à un objet)
-	 * @param tabTraitement
-	 * @param tabPoids
-	 * @param tabValeurs
-	 * @param maxPoids
-	 * @return
+	 * Traitement des objets
+	 * @param tabTraitement le tableau de traitement
+	 * @param a_resoudre le sac à resoudre
+	 * @return le tableau avec l'ensemble des objets traités
 	 */
-	public static int[][] traitementObjet(int[][] tabTraitement,int[] tabPoids,int[] tabValeurs ,int maxPoids){
-		for (int i = 1 ; i < tabPoids.length; i++){
-			for(int k = 0;k<=maxPoids ;k++){
-				if (tabPoids[i] > k)
+	public static int[][] traitementObjet(int[][] tabTraitement,Sac a_resoudre){
+		for (int i = 1 ; i < a_resoudre.getTabObjet().size(); i++){
+			for(int k = 0;k<=a_resoudre.getMaxPoids() ;k++){
+				if (a_resoudre.getTabPoids().get(i) > k)
 					tabTraitement[i][k] = tabTraitement[i-1][k] ;
 				else 
-					tabTraitement[i][k] = Math.max(tabTraitement[i-1][k],tabTraitement[i-1][k - tabPoids[i]] + tabValeurs[i]);
+					tabTraitement[i][k] = Math.max(tabTraitement[i-1][k],tabTraitement[i-1][k - a_resoudre.getTabPoids().get(i)] + a_resoudre.getTAbValeur().get(i));
 			}
 		}
 		return tabTraitement;
 	}
 	/**
-	 * Recuperation de la combinaison optimale
-	 * @param tabTraitement
-	 * @param tabPoids
-	 * @param tabObjet
-	 * @return
+	 * Récuperation d'une combinaison optimale pour un tableau traiter
+	 * @param tabTraitement le tableau de traitement
+	 * @param a_resoudre le sac à resoudre
+	 * @return une liste contenant une combinaison optimale
 	 */
-	public static ArrayList<Character> getCombinaison(int[][] tabTraitement,int[] tabPoids,char[] tabObjet){
-		ArrayList<Character> combinaison = new ArrayList<Character>();
+	public static ArrayList<String> getCombinaison(int[][] tabTraitement,Sac a_resoudre){
+		ArrayList<String> combinaison = new ArrayList<String>();
 		int x = tabTraitement.length - 1 ;
 		int y = tabTraitement[0].length - 1 ;
 		while(tabTraitement[x][y] == tabTraitement[x][y - 1]){
@@ -90,9 +86,9 @@ public class SacADos {
 		while( y > 0){
 			while(x > 0 && tabTraitement[x][y] == tabTraitement[x-1][y])
 				x--;
-			y -= tabPoids[x];
+			y -= a_resoudre.getTabPoids().get(x);
 			if (y >= 0){
-				combinaison.add(tabObjet[x]);
+				combinaison.add(a_resoudre.getTabObjet().get(x));
 			}
 			x--;
 		}	
