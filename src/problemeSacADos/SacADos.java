@@ -3,14 +3,12 @@ package problemeSacADos;
 import java.util.ArrayList;
 
 public class SacADos {
-	
+	public final static int MAXPOIDS = 12;
 	public static void main(String[] args) {
-				/*ArrayList<Character> test = new ArrayList<Character>();
-				test = progDynamique(12);
-				System.out.println(test.toString());*/
-				Sac s = new Sac("fichier_sac.txt",12);
+				Sac s = new Sac("fichier_sac.txt",MAXPOIDS);
 				System.out.println(s.toString());
-				System.out.println(progDynamique(s, 12));
+				//System.out.println(progDynamique(s, 12));
+				PSE.resolutionPSE(s, MAXPOIDS);
 	}
 	
 	/**
@@ -19,15 +17,15 @@ public class SacADos {
 	 */
 	public static ArrayList<String> progDynamique(Sac a_resoudre, int maxPoids){
 		//nombre d'objet à traiter
-		int nbObjet = a_resoudre.getTabObjet().size();
-		int[][] tabTraitement = new int[nbObjet][maxPoids + 1];
+		int nbObjet = a_resoudre.getObjets().size();
+		float[][] tabTraitement = new float[nbObjet][maxPoids + 1];
 		//liste contenant une combinaison optimal
 		ArrayList<String> combinaison = new ArrayList<String>();
 		
 		//debut du traitement remplissage de la premiere ligne
-		tabTraitement = initTabTraitement(tabTraitement, a_resoudre);
+		tabTraitement = initTabTraitement(tabTraitement, a_resoudre,maxPoids);
 		//remplissages des lignes suivantes
-		tabTraitement = traitementObjet(tabTraitement,a_resoudre);
+		tabTraitement = traitementObjet(tabTraitement,a_resoudre,maxPoids);
 		
 		//recuperation de la combinaison
 		combinaison = getCombinaison(tabTraitement, a_resoudre);
@@ -39,15 +37,15 @@ public class SacADos {
 	 * @param a_resoudre sac à traiter
 	 * @return le tableau initialisé
 	 */
-	public static int[][] initTabTraitement(int[][] tabIni,Sac a_resoudre){
+	public static float[][] initTabTraitement(float[][] tabIni,Sac a_resoudre,int maxPoids){
 		//debut du traitement 
 		//remplissage de la premiere ligne
 		int j = 0;
-		while(j < a_resoudre.getMaxPoids() +1) {
-			if (a_resoudre.getTabPoids().get(0) > j)
+		while(j < maxPoids +1) {
+			if (a_resoudre.getObjets().get(0).getPoids() > j)
 				tabIni[0][j] = 0;
 			else
-				tabIni[0][j] = a_resoudre.getTAbValeur().get(0);
+				tabIni[0][j] = a_resoudre.getObjets().get(0).getValeur();
 			j++;
 			}
 		return tabIni;
@@ -58,13 +56,13 @@ public class SacADos {
 	 * @param a_resoudre le sac à resoudre
 	 * @return le tableau avec l'ensemble des objets traités
 	 */
-	public static int[][] traitementObjet(int[][] tabTraitement,Sac a_resoudre){
-		for (int i = 1 ; i < a_resoudre.getTabObjet().size(); i++){
-			for(int k = 0;k<=a_resoudre.getMaxPoids() ;k++){
-				if (a_resoudre.getTabPoids().get(i) > k)
+	public static float[][] traitementObjet(float[][] tabTraitement,Sac a_resoudre,int maxPoids){
+		for (int i = 1 ; i < a_resoudre.getObjets().size(); i++){
+			for(int k = 0;k<= maxPoids ;k++){
+				if (a_resoudre.getObjets().get(i).getPoids() > k)
 					tabTraitement[i][k] = tabTraitement[i-1][k] ;
 				else 
-					tabTraitement[i][k] = Math.max(tabTraitement[i-1][k],tabTraitement[i-1][k - a_resoudre.getTabPoids().get(i)] + a_resoudre.getTAbValeur().get(i));
+					tabTraitement[i][k] = Math.max(tabTraitement[i-1][k],tabTraitement[i-1][(int) (k - a_resoudre.getObjets().get(i).getPoids())] + a_resoudre.getObjets().get(i).getValeur());
 			}
 		}
 		return tabTraitement;
@@ -75,7 +73,7 @@ public class SacADos {
 	 * @param a_resoudre le sac à resoudre
 	 * @return une liste contenant une combinaison optimale
 	 */
-	public static ArrayList<String> getCombinaison(int[][] tabTraitement,Sac a_resoudre){
+	public static ArrayList<String> getCombinaison(float[][] tabTraitement,Sac a_resoudre){
 		ArrayList<String> combinaison = new ArrayList<String>();
 		int x = tabTraitement.length - 1 ;
 		int y = tabTraitement[0].length - 1 ;
@@ -86,14 +84,15 @@ public class SacADos {
 		while( y > 0){
 			while(x > 0 && tabTraitement[x][y] == tabTraitement[x-1][y])
 				x--;
-			y -= a_resoudre.getTabPoids().get(x);
+			y -= a_resoudre.getObjets().get(x).getPoids();
 			if (y >= 0){
-				combinaison.add(a_resoudre.getTabObjet().get(x));
+				combinaison.add(a_resoudre.getObjets().get(x).getNom());
 			}
 			x--;
 		}	
 		return combinaison;
 	}
+	
 	
 	public static String testString(int tab[][]){
 		String retour ="";
