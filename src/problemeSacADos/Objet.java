@@ -9,6 +9,11 @@ public class Objet implements Comparable<Objet>{
 	private float valeur;
 	
 	//constucteur
+	public Objet(){
+		this.nom = null;
+		this.poids = (Float) null;
+		this.valeur = (Float) null;
+	}
 	public Objet(String nom,float poids,float valeur){
 		this.nom = nom;
 		this.poids = poids;

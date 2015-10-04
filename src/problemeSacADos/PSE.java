@@ -11,11 +11,11 @@ public class PSE {
 			if(poids_actuel <= maxPoids){
 				a.add((int) (a.last() + s.getObjets().get(i).getValeur()));
 				poids_actuel += s.getObjets().get(i).getPoids();
+				if(i != 0)
+					a.add((int) s.getObjets().get(i - 1).getValeur());
+				else
+					a.add(0);
 			}
-			if(i != 0)
-				a.add((int) s.getObjets().get(i - 1).getValeur());
-			else
-				a.add(0);
 		}
 		System.out.println(a.toString());
 	}
