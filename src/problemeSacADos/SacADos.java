@@ -8,8 +8,18 @@ public class SacADos {
 				Sac s = new Sac("fichier_sac.txt",MAXPOIDS);
 				System.out.println(s.toString());
 				//System.out.println(progDynamique(s, 12));
-				PSE.resolutionPSE(s, MAXPOIDS);
-	}
+				//PSE.resolutionPSE(s, MAXPOIDS);
+				//TEST
+				ArrayList<Objet> test = new ArrayList<Objet>();
+				for(Objet o : s.getObjets()){
+					test.add(o);
+					System.out.println(o.getRaportPoidsValeur());
+				}
+					
+				ComparateurRapportValeurPoids comp = new ComparateurRapportValeurPoids();
+				test.sort(comp);
+				
+	}	
 	
 	/**
 	 * Methode de resolution du probleme de sac à dos (test)

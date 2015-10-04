@@ -2,7 +2,7 @@ package problemeSacADos;
 /**
  * Class caracterisant un objets qui sera par le suite contenu dans un sac
  */
-public class Objet {
+public class Objet implements Comparable<Objet>{
 	//attributs
 	private String nom;
 	private float poids;
@@ -26,5 +26,18 @@ public class Objet {
 	}
 	public String toString(){
 		return this.nom + "|" + this.poids + "|" + this.valeur;
+	}
+	public float getRaportPoidsValeur(){
+		return (this.valeur/this.poids);
+	}
+
+	@Override
+	public int compareTo(Objet o) {
+		if(this.getRaportPoidsValeur() > o.getRaportPoidsValeur())
+			return 1;
+		if(this.getRaportPoidsValeur() > o.getRaportPoidsValeur())
+			return -1;
+
+		return 0;
 	}
 }
