@@ -7,6 +7,5 @@ public class SacADos {
 				System.out.println(s.toString());
 				//System.out.println(ProgDynamique.progDynamique(s, 12));
 				PSE.resolutionPSE(s, MAXPOIDS);
-				
 	}	
 }

@@ -5,14 +5,14 @@ package problemeSacADos;
 public class Objet implements Comparable<Objet>{
 	//attributs
 	private String nom;
-	private float poids;
-	private float valeur;
+	private Float poids;
+	private Float valeur;
 	
 	//constucteur
 	public Objet(){
 		this.nom = null;
-		this.poids = (Float) null;
-		this.valeur = (Float) null;
+		this.poids =  null;
+		this.valeur =  null;
 	}
 	public Objet(String nom,float poids,float valeur){
 		this.nom = nom;
