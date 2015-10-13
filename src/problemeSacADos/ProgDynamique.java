@@ -7,7 +7,7 @@ public class ProgDynamique {
 	 * Methode de resolution du probleme de sac à dos (test)
 	 *@return une liste contenant une combinaison optimal
 	 */
-	public static ArrayList<String> progDynamique(Sac a_resoudre, int maxPoids){
+	public static ArrayList<String> progDynamique(Contenu a_resoudre, int maxPoids){
 		//nombre d'objet à traiter
 		int nbObjet = a_resoudre.getObjets().size();
 		float[][] tabTraitement = new float[nbObjet][maxPoids + 1];
@@ -29,7 +29,7 @@ public class ProgDynamique {
 	 * @param a_resoudre sac à traiter
 	 * @return le tableau initialisé
 	 */
-	public static float[][] initTabTraitement(float[][] tabIni,Sac a_resoudre,int maxPoids){
+	public static float[][] initTabTraitement(float[][] tabIni,Contenu a_resoudre,int maxPoids){
 		//debut du traitement 
 		//remplissage de la premiere ligne
 		int j = 0;
@@ -48,7 +48,7 @@ public class ProgDynamique {
 	 * @param a_resoudre le sac à resoudre
 	 * @return le tableau avec l'ensemble des objets traités
 	 */
-	public static float[][] traitementObjet(float[][] tabTraitement,Sac a_resoudre,int maxPoids){
+	public static float[][] traitementObjet(float[][] tabTraitement,Contenu a_resoudre,int maxPoids){
 		for (int i = 1 ; i < a_resoudre.getObjets().size(); i++){
 			for(int k = 0;k<= maxPoids ;k++){
 				if (a_resoudre.getObjets().get(i).getPoids() > k)
@@ -65,7 +65,7 @@ public class ProgDynamique {
 	 * @param a_resoudre le sac à resoudre
 	 * @return une liste contenant une combinaison optimale
 	 */
-	public static ArrayList<String> getCombinaison(float[][] tabTraitement,Sac a_resoudre){
+	public static ArrayList<String> getCombinaison(float[][] tabTraitement,Contenu a_resoudre){
 		ArrayList<String> combinaison = new ArrayList<String>();
 		int x = tabTraitement.length - 1 ;
 		int y = tabTraitement[0].length - 1 ;

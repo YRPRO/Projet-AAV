@@ -6,32 +6,32 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Class permettant de caracteriser un objet sac
+ * Class permettant de caracteriser un objet contenu
  */
-public class Sac {
-	//nombre de parametres d'un sac 
+public class Contenu {
+	//nombre de parametres d'un contenu 
 	private final int NB_PARAM_OBJET = 0;
 	private final int NB_PARAM_POIDS = 1;
 	private final int NB_PARAM_VALEUR = 2;
-	//attributs d'un sac
+	//attributs d'un contenu
 	
-	//Objets du sac 
+	//Objets du contenu 
 	private ArrayList< Objet> objets;
 	
-	//constucteur pour creer un sac vide
-	public Sac(){
+	//constucteur pour creer un contenu vide
+	public Contenu(){
 		this.objets = null;
 	}
-	public Sac(String cheminFichier, int maxPoids){
+	public Contenu(String cheminFichier, int maxPoids){
 		this.objets = new ArrayList<Objet>();
 		//creation des objet à partir du fichier entrer en parametre
-		this.fileToSac(cheminFichier);
+		this.fileTocontenu(cheminFichier);
 	}
 	/**
-	 * Méthode permetant de recupérer les éléments du fichier texte et les intégrer à l'objet sac
+	 * Méthode permetant de recupérer les éléments du fichier texte et les intégrer à l'objet contenu
 	 * @param cheminFichier chaine de caractere contenant le chemin du fichier
 	 */
-	private void fileToSac(String cheminFichier){
+	private void fileTocontenu(String cheminFichier){
 		File f = new File(cheminFichier);
 		try {
 			Scanner sc = new Scanner(f);
@@ -55,7 +55,7 @@ public class Sac {
 	}
 	
 	/**
-	 * Affichage du contenu du sac
+	 * Affichage du contenu du contenu
 	 */
 	public String toString(){
 		String contenu ="";
@@ -64,4 +64,14 @@ public class Sac {
 			contenu += o.toString() + "\n";
 		return contenu;
 	}
+	/**
+	 * methode retounant la somme des valeurs des objets
+	 */
+	public float getSommeValeurObjet(){
+		float somme = 0;
+		for(Objet o :this.objets )
+			somme+=o.getValeur();
+		return somme;
+	}
+	
 }
