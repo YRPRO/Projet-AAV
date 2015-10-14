@@ -10,15 +10,5 @@ public class SacADos {
 				//System.out.println(ProgDynamique.progDynamique(s, 12));
 				PSE.resolutionPSE(s, MAXPOIDS);
 	}	
-	/**
-	 * methode retournant la valeur d'un sac 
-	 * @param l liste contenant les objets du sac
-	 * @return valeur , somme de la valeur de chacun des objets d'un sac
-	 */
-	public static float getValeurSac(ArrayList<Objet> l){
-		float valeur=0;
-		for(Objet o : l)
-			valeur+= o.getValeur();
-		return valeur;
-	}
+	
 }

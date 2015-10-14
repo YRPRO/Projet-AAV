@@ -1,40 +1,84 @@
 package problemeSacADos;
 
+import java.util.ArrayList;
+
 public class ABR {
-	private Double valeur ; 
+	private ArrayList<Objet> valeur ; 
 	private ABR sousArbreGauche ; 
 	private ABR sousArbreDroit ; 
 	
 	public ABR (){
-		this.valeur = null ;
+		this.valeur = new ArrayList<Objet>() ;
 		this.sousArbreGauche = null ;
 		this.sousArbreDroit = null ;
 	}
-	public ABR (Double valeur){
+	/*public ABR (Double valeur){
 		this.valeur = valeur ;
 		this.sousArbreGauche = null ;
 		this.sousArbreDroit = null ;
-	}
-	private double getValeur (){
+	}*/
+	private ArrayList<Objet> getValeur (){
 		return this.valeur ;
 	}
-	private void setValeur ( double v){
+	/*private void setValeur ( double v){
 		this.valeur = v;
-	}
-	public void ajouter ( double v){
-		if ( this.valeur == null ){
-			this.valeur = new Double (v);
+	}*/
+	public void ajouter (Objet o){
+		if ( this.valeur.isEmpty() ){
+			//this.valeur = new ArrayList<Objet>();
+			this.valeur.add(o);
 			this.sousArbreGauche = new ABR ();
 			this.sousArbreDroit = new ABR ();
 		}
 		else {
-			if ( this.valeur > v){
-				sousArbreGauche.ajouter (v);
+			if ( this.getSommeNoeud() > o.getValeur()){
+				sousArbreGauche.ajouter (o);
 			} 
 			else {
-				sousArbreDroit.ajouter (v);
+				sousArbreDroit.ajouter(o);
 			}
 		}
+	}
+	public void ajouterObjet (Objet o){
+		if ( ! this.valeur.contains(o) ){
+			//this.valeur = new ArrayList<Objet>();
+			this.valeur.add(o);
+			this.sousArbreGauche = new ABR ();
+			recopieListe(this.valeur, this.sousArbreGauche.valeur);
+			this.sousArbreDroit = new ABR ();
+		}
+		else {
+			if ( this.getSommeNoeud() > o.getValeur()){
+				sousArbreGauche.ajouter (o);
+			} 
+			else {
+				sousArbreDroit.ajouter(o);
+			}
+		}
+	}
+	public void ajouterVide (){
+			this.sousArbreDroit = new ABR ();
+			recopieListe(this.valeur, this.sousArbreDroit.valeur);
+	}
+	public void ajouterListe(ArrayList<Objet> l){
+		if ( this.valeur.isEmpty() ){
+			//this.valeur = new ArrayList<Objet>();
+			recopieListe(l,this.valeur);
+			this.sousArbreGauche = new ABR ();
+			this.sousArbreDroit = new ABR ();
+		}
+		else {
+			if ( this.getSommeNoeud() > getValeurListe(l)){
+				sousArbreGauche.ajouterListe (l);
+			} 
+			else {
+				sousArbreDroit.ajouterListe (l);
+			}
+		}
+	}
+	private void recopieListe(ArrayList<Objet> l1 ,ArrayList<Objet> l2){
+		for(Objet o:l1)
+			l2.add(o);
 	}
 	public String toString (){
 		String affichage ;
@@ -72,55 +116,25 @@ public class ABR {
 					&& sousArbreGauche . estEquilibre ()) && sousArbreDroit . estEquilibre ();
 		}
 	}
-	// De la gauche vers la droite
-	public void rotationDroite (){
-		double tv = getValeur ();
-		setValeur ( sousArbreGauche . getValeur ());
-		sousArbreGauche . setValeur (tv );
-		ABR ta = this . sousArbreGauche ;
-		sousArbreGauche = this . sousArbreGauche . sousArbreGauche ;
-		ta. sousArbreGauche = ta. sousArbreDroit ;
-		ta. sousArbreDroit = sousArbreDroit ;
-		sousArbreDroit = ta;
-	}
-	// De la droite vers la gauche
-	public void rotationGauche (){
-		double tv = getValeur ();
-		setValeur ( sousArbreDroit . getValeur ());
-		sousArbreDroit . setValeur (tv );
-		ABR ta = this . sousArbreDroit ;
-		sousArbreDroit = this . sousArbreDroit . sousArbreDroit ;
-		ta. sousArbreDroit = ta. sousArbreGauche ;
-		ta. sousArbreGauche = sousArbreGauche ;
-		sousArbreGauche = ta;
-	}
-	public void ajouterEq ( double v){
-		if ( this.valeur == null ){
-			this.valeur = new Double (v);
-			this.sousArbreGauche = new ABR ();
-			this.sousArbreDroit = new ABR ();
+	private double getSommeNoeud(){
+		if(this.valeur == null)
+			return 0;
+		else{
+			double somme = 0;
+			for(Objet o : this.valeur)
+				somme+=o.getValeur();
+			return somme;
 		}
-		else {
-			if ( this.valeur > v){
-				sousArbreGauche.ajouterEq (v);
-				if (!( estEquilibre ())){
-					if (( sousArbreGauche.sousArbreGauche == null )
-							|| ( sousArbreGauche.sousArbreGauche.hauteur() < sousArbreGauche.sousArbreDroit.hauteur())){
-						sousArbreGauche.rotationDroite();
-					}
-					rotationGauche();
-				}
-			} 
-			else {
-				sousArbreDroit.ajouterEq (v);
-				if (!( estEquilibre())){
-					if (( sousArbreDroit.sousArbreDroit == null )
-							|| ( sousArbreDroit.sousArbreDroit.hauteur() < sousArbreDroit.sousArbreGauche.hauteur())){
-						sousArbreDroit . rotationGauche ();
-					}
-					rotationDroite ();
-				}
-			}
-		}
+	}
+	/**
+	 * methode retournant la valeur d'un sac 
+	 * @param l liste contenant les objets du sac
+	 * @return valeur , somme de la valeur de chacun des objets d'un sac
+	 */
+	private float getValeurListe(ArrayList<Objet> l){
+		float valeur=0;
+		for(Objet o : l)
+			valeur+= o.getValeur();
+		return valeur;
 	}
 }
