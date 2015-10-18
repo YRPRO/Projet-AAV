@@ -1,7 +1,7 @@
 package problemeSacADos;
 
 public class ABR {
-	private Noeud n ; 
+	/*private Noeud n ; 
 	private ABR sousArbreGauche ; 
 	private ABR sousArbreDroit ; 
 	
@@ -15,18 +15,18 @@ public class ABR {
 		this.sousArbreGauche = null ;
 		this.sousArbreDroit = null ;
 	}
-	private Noeud getNoeud (){
+	private Noeud getNoeud(){
 		return this.n;
 	}
 	
 	public void ajouter (Noeud n){
-		if ( this.n == null && this.hauteur() > 0){
+		if ( this.n== null){
 			this.n= n;
 			this.sousArbreGauche = new ABR();
 			this.sousArbreDroit = new ABR();
 		}
 		else {
-			if ( this.sousArbreGauche.getNoeud().getBeneficePotentiel() < n.getBeneficePotentiel())
+			if ( n.getSelectionner())
 				sousArbreGauche.ajouter (n);
 			else 
 				sousArbreDroit.ajouter(n);
@@ -60,5 +60,5 @@ public class ABR {
 			int hSAD = sousArbreDroit . hauteur ();
 			return 1 + (( hSAD > hSAG )? hSAD : hSAG );
 		}
-	}
+	}*/
 }

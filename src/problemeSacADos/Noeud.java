@@ -1,44 +1,37 @@
 package problemeSacADos;
 
+import java.util.ArrayList;
+
 public class Noeud {
-	private Objet o;
-	private Noeud predecesseur;
-	private float benefice_potentiel;
+	private float valeur;
+	private ArrayList<Objet> contenu;
 	
 	public Noeud(){
-		this.o = null;
-		this.predecesseur = null;
-		this.benefice_potentiel = 0;
+		this.valeur = 0;
+		this.contenu = null;
 	}
 	
-	public Noeud(Objet o,Noeud n,float benefice){
-		this.o = o;
-		this.predecesseur = n;
-		this.benefice_potentiel = 0;
-	}
-	
-	public Objet getO() {
-		return o;
+	public Noeud(ArrayList<Objet> list){
+		this.contenu = new ArrayList<Objet>();
+		for(Objet o: list)
+			this.contenu.add(o);
+		
+		this.valeur = this.calculerValeur();
 	}
 
-	public void setO(Objet o) {
-		this.o = o;
+	public float getValeur() {
+		return valeur;
 	}
-
-	public Noeud getPredecesseur() {
-		return predecesseur;
+	public ArrayList<Objet> getContenu(){
+		return this.contenu;
 	}
-
-	public float getBeneficePotentiel() {
-		return benefice_potentiel;
-	}
-
-	public void setBeneficePotentiel(float benefice_potentiel) {
-		this.benefice_potentiel = benefice_potentiel;
+	private float calculerValeur(){
+		float val =0;
+		for(Objet o :this.contenu)
+			val+=o.getValeur();
+		return val;
 	}
 	public String toString(){
-		return this.o.toString();
+		return this.contenu.toString();
 	}
-	
-	
 }
