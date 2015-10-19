@@ -2,7 +2,7 @@ package problemeSacADos;
 
 import java.util.ArrayList;
 
-public class Noeud {
+public class Noeud implements Comparable<Noeud> {
 	private float valeur;
 	private ArrayList<Objet> contenu;
 	
@@ -22,6 +22,12 @@ public class Noeud {
 	public float getValeur() {
 		return valeur;
 	}
+	public float getPoids(){
+		float poids = 0;
+		for(Objet o :this.contenu)
+			poids+=o.getPoids();
+		return poids;
+	}
 	public ArrayList<Objet> getContenu(){
 		return this.contenu;
 	}
@@ -33,5 +39,15 @@ public class Noeud {
 	}
 	public String toString(){
 		return this.contenu.toString();
+	}
+
+	@Override
+	public int compareTo(Noeud o) {
+		if(this.valeur > o.valeur)
+			return 1;
+		if(this.valeur < o.valeur)
+			return -1;
+		
+		return 0;
 	}
 }

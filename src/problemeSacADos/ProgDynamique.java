@@ -7,12 +7,12 @@ public class ProgDynamique {
 	 * Methode de resolution du probleme de sac à dos (test)
 	 *@return une liste contenant une combinaison optimal
 	 */
-	public static ArrayList<String> progDynamique(Contenu a_resoudre, int maxPoids){
+	public static void progDynamique(Contenu a_resoudre, int maxPoids){
 		//nombre d'objet à traiter
 		int nbObjet = a_resoudre.getObjets().size();
 		float[][] tabTraitement = new float[nbObjet][maxPoids + 1];
 		//liste contenant une combinaison optimal
-		ArrayList<String> combinaison = new ArrayList<String>();
+		ArrayList<Objet> combinaison = new ArrayList<Objet>();
 		
 		//debut du traitement remplissage de la premiere ligne
 		tabTraitement = initTabTraitement(tabTraitement, a_resoudre,maxPoids);
@@ -21,7 +21,11 @@ public class ProgDynamique {
 		
 		//recuperation de la combinaison
 		combinaison = getCombinaison(tabTraitement, a_resoudre);
-		return combinaison;
+		System.out.println("Resultat methode programmation dynamique :");
+		System.out.println("une combinaison optimale est : ");
+		System.out.println(combinaison.toString());
+		System.out.println("Pour un poids total de : "+SacADos.calculPoidsTotal(combinaison));
+		System.out.println("Pour une valeur total de : " +SacADos.calculValeurTotal(combinaison));
 	}
 	/**
 	 * Initialisation du tableau de traitement
@@ -65,8 +69,8 @@ public class ProgDynamique {
 	 * @param a_resoudre le sac à resoudre
 	 * @return une liste contenant une combinaison optimale
 	 */
-	public static ArrayList<String> getCombinaison(float[][] tabTraitement,Contenu a_resoudre){
-		ArrayList<String> combinaison = new ArrayList<String>();
+	public static ArrayList<Objet> getCombinaison(float[][] tabTraitement,Contenu a_resoudre){
+		ArrayList<Objet> combinaison = new ArrayList<Objet>();
 		int x = tabTraitement.length - 1 ;
 		int y = tabTraitement[0].length - 1 ;
 		while(tabTraitement[x][y] == tabTraitement[x][y - 1]){
@@ -78,7 +82,7 @@ public class ProgDynamique {
 				x--;
 			y -= a_resoudre.getObjets().get(x).getPoids();
 			if (y >= 0){
-				combinaison.add(a_resoudre.getObjets().get(x).getNom());
+				combinaison.add(a_resoudre.getObjets().get(x));
 			}
 			x--;
 		}	
